@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">AplikasiStoryApp</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="error_empty_name">Please enter your name.</string>
+    <string name="error_invalid_email">Please enter a valid email address.</string>
+    <string name="error_short_password">Password must be at least 6 characters long.</string>
+    <string name="register_success">Register Successful</string>
+    <string name="error_registration_failed">Registration failed: %1$d</string>
+    <string name="error_generic">An error occurred: %1$s</string>
+    <string name="error_unknown">An unknown error occurred.</string>
+</resources>
