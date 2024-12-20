@@ -1,4 +1,4 @@
-package com.irwan.aplikasistoryapp.Ui
+package com.irwan.aplikasistoryapp.Ui.Register
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.irwan.aplikasistoryapp.api.Config
-import com.irwan.aplikasistoryapp.MainActivity
 import com.irwan.aplikasistoryapp.R
+import com.irwan.aplikasistoryapp.Ui.Add.AddStoryActivity
 import com.irwan.aplikasistoryapp.api.Register
 import com.irwan.aplikasistoryapp.databinding.ActivityRegisterBinding
 import kotlinx.coroutines.launch
@@ -16,7 +16,6 @@ import retrofit2.HttpException
 
 
 class RegisterActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +60,6 @@ class RegisterActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // Langsung menggunakan RegisterResponse
                 val response = apiService.registerUser(register)
 
                 if (!response.error) {
@@ -83,7 +81,7 @@ class RegisterActivity : AppCompatActivity() {
 
 
     private fun navigateToMainActivity() {
-        val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+        val intent = Intent(this@RegisterActivity, AddStoryActivity::class.java)
         startActivity(intent)
         finish()
     }
@@ -93,7 +91,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        // Contoh sederhana: Anda bisa menggunakan ProgressBar
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.btnRegister.isEnabled = !isLoading
     }

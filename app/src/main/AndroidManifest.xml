@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,13 +15,26 @@
         android:theme="@style/Theme.AplikasiStoryApp"
         tools:targetApi="31">
         <activity
+            android:name=".Ui.Add.AddLisStoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CameraMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Ui.Story"
+            android:exported="false"
+            android:theme="@style/Theme.AplikasiStoryApp" />
+        <activity
             android:name=".Camera"
             android:exported="false" />
         <activity
-            android:name=".Ui.RegisterActivity"
+            android:name=".Ui.Register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".Ui.Login"
+            android:name=".Ui.Login.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +43,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
-            android:exported="true"></activity>
+            android:name=".Ui.Add.AddStoryActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

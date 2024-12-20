@@ -13,4 +13,12 @@
     <string name="error_registration_failed">Registration failed: %1$d</string>
     <string name="error_generic">An error occurred: %1$s</string>
     <string name="error_unknown">An unknown error occurred.</string>
+
+    <string name="add_story">Add new story</string>
+    <string name="find_stories_failed">There are no stories.</string>
+    <string name="story_photo">Story photo</string>
+
+    <string name="take_picture">Take picture</string>
+    <string name="switch_camera">Switch camera</string>
+
 </resources>

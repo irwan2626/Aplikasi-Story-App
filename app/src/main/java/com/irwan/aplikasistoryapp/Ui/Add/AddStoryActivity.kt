@@ -1,4 +1,4 @@
-package com.irwan.aplikasistoryapp
+package com.irwan.aplikasistoryapp.Ui.Add
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -16,7 +16,7 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-class MainActivity : AppCompatActivity() {
+class AddStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreferences: SharedPreferences
@@ -93,16 +93,16 @@ class MainActivity : AppCompatActivity() {
 
                 if (response.isSuccessful && response.body() != null) {
                     val body = response.body()!!
-                    if (!body.error!!) {
-                        Toast.makeText(this@MainActivity, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
+                    if (!body.error) {
+                        Toast.makeText(this@AddStoryActivity, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this@MainActivity, body.message, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@AddStoryActivity, body.message, Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Toast.makeText(this@MainActivity, "Upload failed!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddStoryActivity, "Upload failed!", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddStoryActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
