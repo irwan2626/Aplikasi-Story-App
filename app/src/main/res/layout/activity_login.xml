@@ -9,6 +9,13 @@
     android:gravity="center"
     tools:context=".Ui.Login.Login">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -37,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Login"/>
+
 
     <LinearLayout
         android:layout_width="match_parent"

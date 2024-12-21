@@ -1,4 +1,4 @@
-package com.irwan.aplikasistoryapp.Ui.Add
+package com.example.loginapp
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,11 +11,12 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.irwan.aplikasistoryapp.R
+import com.irwan.aplikasistoryapp.Ui.Add.AddStoryActivity
 import com.irwan.aplikasistoryapp.api.Config
 import com.irwan.aplikasistoryapp.api.Story
 import com.irwan.aplikasistoryapp.databinding.ActivityAddLisStoryBinding
@@ -32,19 +33,34 @@ class AddLisStoryActivity : AppCompatActivity() {
 
         enableEdgeToEdge()
         setupRecyclerView()
-        fetchStories()
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+        // Receive data from AddStoryActivity
+        val description = intent.getStringExtra("description")
+        val photoUri = intent.getStringExtra("photoUri")
+
+        if (description != null && photoUri != null) {
+            // Display data in RecyclerView or a placeholder view
+            val newStory = Story(
+                id = "",
+                name = "New Story", // Placeholder title
+                description = description,
+                photoUrl = photoUri,
+                createdAt = "",
+                lat = null,
+                lon = null
+            )
+
+            val adapter = StoryAdapter(listOf(newStory)) // Update adapter with new story
+            binding.rvStories.adapter = adapter
+        } else {
+            fetchStories()
         }
 
         binding.fab.setOnClickListener {
-            // Navigate to Add Story Activity
             startActivity(Intent(this, AddStoryActivity::class.java))
         }
     }
+
 
     private fun setupRecyclerView() {
         binding.rvStories.layoutManager = LinearLayoutManager(this)
@@ -53,10 +69,11 @@ class AddLisStoryActivity : AppCompatActivity() {
 
     private fun fetchStories() {
         val apiService = Config.instance
+        val token = "2022-01-08T06:34:18.598Z" // Gantilah dengan token yang valid
 
         lifecycleScope.launch {
             try {
-                val response = apiService.getAllStories()
+                val response = apiService.getAllStories(token)
                 if (response.isSuccessful && response.body() != null) {
                     val storiesResponse = response.body()!!
                     if (!storiesResponse.error) {
@@ -87,24 +104,21 @@ class AddLisStoryActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    class StoryAdapter(listStory: List<Story>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class StoryAdapter(private val listStory: List<Story>) : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
 
-        // ViewHolder class for holding views for each story item
         inner class StoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val ivPhoto: ImageView = itemView.findViewById(R.id.iv_photo)
             val tvTitle: TextView = itemView.findViewById(R.id.tv_title)
             val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
         }
 
-        // Inflates the item layout and returns a StoryViewHolder
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.item_story, parent, false)
             return StoryViewHolder(view)
         }
 
-        // Binds the data to the views in the StoryViewHolder
         override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
-            val story = story[position]
+            val story = listStory[position]
             holder.tvTitle.text = story.name
             holder.tvDescription.text = story.description
 
@@ -114,8 +128,6 @@ class AddLisStoryActivity : AppCompatActivity() {
                 .into(holder.ivPhoto)
         }
 
-        // Returns the total number of stories
-        override fun getItemCount(): Int = stories.size
-
+        override fun getItemCount(): Int = listStory.size
     }
 }

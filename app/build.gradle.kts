@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.lifecycle)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -64,6 +65,9 @@ dependencies {
     implementation(libs.logging.interceptor)
 
     implementation (libs.logging.interceptor)
+
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
 
 
 }

@@ -2,9 +2,12 @@ package com.irwan.aplikasistoryapp.Ui.Register
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.irwan.aplikasistoryapp.api.Config
 import com.irwan.aplikasistoryapp.R
@@ -23,16 +26,37 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+
+        binding.edRegisterPassword.doOnTextChanged { text, _, _, _ ->
+            if (text != null && text.length < 8) {
+                binding.edRegisterPassword.error = getString(R.string.error_short_password)
+            } else {
+                binding.edRegisterPassword.error = null
+            }
+        }
+
+        supportActionBar?.hide()
+
         binding.btnRegister.setOnClickListener {
-            val username = binding.edRegisterName.text.toString().trim()
+            val name = binding.edRegisterName.text.toString().trim()
             val email = binding.edRegisterEmail.text.toString().trim()
             val password = binding.edRegisterPassword.text.toString().trim()
 
-            if (validateInput(username, email, password)) {
+            if (validateInput(name, email, password)) {
                 showLoading(true)
-                registerUser(username, email, password)
+                registerUser(name, email, password)
             }
         }
+
+        binding.btnRegister.setOnClickListener {
+            // Kembali ke halaman login
+            finish()
+        }
+
+        binding.edRegisterName.doOnTextChanged { _, _, _, _ -> setRegisterButtonEnable() }
+        binding.edRegisterEmail.doOnTextChanged { _, _, _, _ -> setRegisterButtonEnable() }
+        binding.edRegisterPassword.doOnTextChanged { _, _, _, _ -> setRegisterButtonEnable() }
     }
 
     private fun validateInput(name: String, email: String, password: String): Boolean {
@@ -41,11 +65,11 @@ class RegisterActivity : AppCompatActivity() {
                 showToast(getString(R.string.error_empty_name))
                 false
             }
-            email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+            email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                 showToast(getString(R.string.error_invalid_email))
                 false
             }
-            password.length < 6 -> {
+            password.length < 8 -> {
                 showToast(getString(R.string.error_short_password))
                 false
             }
@@ -53,6 +77,17 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun setRegisterButtonEnable() {
+        val nameResult = binding.edRegisterName.text
+        val emailResult = binding.edRegisterEmail.text
+        val passwordResult = binding.edRegisterPassword.text
+
+        binding.btnRegister.isEnabled = !nameResult.isNullOrBlank() &&
+                !emailResult.isNullOrBlank() &&
+                Patterns.EMAIL_ADDRESS.matcher(emailResult).matches() &&
+                !passwordResult.isNullOrBlank() &&
+                passwordResult.length >= 8
+    }
 
     private fun registerUser(name: String, email: String, password: String) {
         val apiService = Config.instance
@@ -78,8 +113,6 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun navigateToMainActivity() {
         val intent = Intent(this@RegisterActivity, AddStoryActivity::class.java)
         startActivity(intent)
@@ -95,5 +128,8 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.isEnabled = !isLoading
     }
 }
+
+
+
 
 

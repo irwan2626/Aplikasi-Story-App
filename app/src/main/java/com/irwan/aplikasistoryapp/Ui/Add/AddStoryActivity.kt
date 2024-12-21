@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.loginapp.AddLisStoryActivity
 import com.irwan.aplikasistoryapp.api.Config
 import com.irwan.aplikasistoryapp.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
@@ -58,6 +59,18 @@ class AddStoryActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Token not found. Please log in again.", Toast.LENGTH_SHORT).show()
             }
+
+            binding.iconHome.setOnClickListener {
+                // Tetap di halaman ini karena Home mengarah ke AddStoryActivity
+                Toast.makeText(this, "You are already on the Home page", Toast.LENGTH_SHORT).show()
+            }
+
+            // Handle Story Button
+            binding.iconStory.setOnClickListener {
+                // Pindah ke AddLisStoryActivity
+                val intent = Intent(this, AddLisStoryActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -95,6 +108,12 @@ class AddStoryActivity : AppCompatActivity() {
                     val body = response.body()!!
                     if (!body.error) {
                         Toast.makeText(this@AddStoryActivity, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
+
+                        // Navigate to AddLisStoryActivity with the data
+                        val intent = Intent(this@AddStoryActivity, AddLisStoryActivity::class.java)
+                        intent.putExtra("description", description)
+                        intent.putExtra("photoUri", photoUri.toString())
+                        startActivity(intent)
                     } else {
                         Toast.makeText(this@AddStoryActivity, body.message, Toast.LENGTH_SHORT).show()
                     }
@@ -106,6 +125,7 @@ class AddStoryActivity : AppCompatActivity() {
             }
         }
     }
+
 
     private fun getFileFromUri(uri: Uri): File {
         val inputStream = contentResolver.openInputStream(uri)
@@ -122,4 +142,5 @@ class AddStoryActivity : AppCompatActivity() {
         private const val REQUEST_IMAGE_PICKER = 1001
     }
 }
+
 
