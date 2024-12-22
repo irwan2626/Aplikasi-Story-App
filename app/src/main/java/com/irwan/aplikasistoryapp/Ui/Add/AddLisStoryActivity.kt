@@ -10,13 +10,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.irwan.aplikasistoryapp.R
-import com.irwan.aplikasistoryapp.Ui.Add.AddStoryActivity
+import com.irwan.aplikasistoryapp.Ui.Add.MainActivity
 import com.irwan.aplikasistoryapp.api.Config
 import com.irwan.aplikasistoryapp.api.Story
 import com.irwan.aplikasistoryapp.databinding.ActivityAddLisStoryBinding
@@ -57,7 +56,7 @@ class AddLisStoryActivity : AppCompatActivity() {
         }
 
         binding.fab.setOnClickListener {
-            startActivity(Intent(this, AddStoryActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 

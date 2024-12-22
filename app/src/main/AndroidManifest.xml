@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -17,22 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AplikasiStoryApp"
         tools:targetApi="31">
-        <activity
-            android:name=".Ui.Add.AddLisStoryActivity"
-            android:exported="false" />
-        <activity
-            android:name=".AddMainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Ui.Camera.CameraMainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Ui.Story"
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.app.fileprovider"
             android:exported="false"
-            android:theme="@style/Theme.AplikasiStoryApp" />
+            android:grantUriPermissions="true">
+        <meta-data
+            android:name="android.support.FILE_PROVIDER_PATHS"
+            android:resource="@xml/file_paths" />
+    </provider>
+
         <activity
-            android:name=".Camera"
+            android:name=".Ui.Add.MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".Ui.Register.RegisterActivity"
             android:exported="false" />
@@ -45,9 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Ui.Add.AddStoryActivity"
-            android:exported="true" />
+
     </application>
 
 </manifest>

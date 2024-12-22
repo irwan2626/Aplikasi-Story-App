@@ -7,11 +7,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.irwan.aplikasistoryapp.api.Config
 import com.irwan.aplikasistoryapp.R
-import com.irwan.aplikasistoryapp.Ui.Add.AddStoryActivity
+import com.irwan.aplikasistoryapp.Ui.Login.Login
 import com.irwan.aplikasistoryapp.api.Register
 import com.irwan.aplikasistoryapp.databinding.ActivityRegisterBinding
 import kotlinx.coroutines.launch
@@ -114,7 +113,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainActivity() {
-        val intent = Intent(this@RegisterActivity, AddStoryActivity::class.java)
+        val intent = Intent(this@RegisterActivity, Login::class.java)
         startActivity(intent)
         finish()
     }

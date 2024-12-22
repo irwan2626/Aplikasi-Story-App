@@ -21,4 +21,13 @@
     <string name="take_picture">Take picture</string>
     <string name="switch_camera">Switch camera</string>
 
+    <string name="package_name">com.example.submissionandroidintermediate</string>
+    <string name="post_users">Buat cerita baru</string>
+
+
+    <string name="imageStoryUploadDesc">Ini adalah gambar ketika foto dipilih</string>
+    <string name="imageSplashDesc">Ini adalah logo bangkit di splashscreen</string>
+    <string name="warningAddImage">Upload foto terlebih dahulu</string>
+    <string name="warningAddDescription">Tambahkan deskripsi terlebih dahulu</string>
+
 </resources>

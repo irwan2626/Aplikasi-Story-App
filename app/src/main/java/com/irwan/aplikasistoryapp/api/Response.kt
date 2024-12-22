@@ -16,7 +16,11 @@ data class LoginResult(
 data class ResponseRegister(
 	val error: Boolean,
 	val message: String
-)
+) {
+	fun enqueue(any: Any) {
+
+	}
+}
 
 data class AddStoryResponse(
 	val error : Boolean,
