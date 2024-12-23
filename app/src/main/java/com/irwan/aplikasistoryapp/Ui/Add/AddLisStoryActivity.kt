@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.irwan.aplikasistoryapp.R
 import com.irwan.aplikasistoryapp.Ui.Add.MainActivity
-import com.irwan.aplikasistoryapp.api.Config
+import com.irwan.aplikasistoryapp.api.ApiClient
 import com.irwan.aplikasistoryapp.api.Story
 import com.irwan.aplikasistoryapp.databinding.ActivityAddLisStoryBinding
 import kotlinx.coroutines.launch
@@ -67,7 +67,7 @@ class AddLisStoryActivity : AppCompatActivity() {
     }
 
     private fun fetchStories() {
-        val apiService = Config.instance
+        val apiService = ApiClient.instance
         val token = "2022-01-08T06:34:18.598Z" // Gantilah dengan token yang valid
 
         lifecycleScope.launch {

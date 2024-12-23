@@ -26,7 +26,7 @@ interface ApiService {
 
     @Multipart
     @POST("stories")
-    fun addNewStory(
+    suspend fun addNewStory(
         @Part("description") description: RequestBody,
         @Part photo: MultipartBody.Part,
         @Part("lat") lat: RequestBody? = null,

@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.0"
+compressor = "3.0.1"
 glide = "4.12.0"
 kotlin = "1.9.24"
 coreKtx = "1.15.0"
@@ -23,6 +24,7 @@ cameraLifecycle = "1.4.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+compressor = { module = "id.zelory:compressor", version.ref = "compressor" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 jakewharton-retrofit2-kotlin-coroutines-adapter = { module = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter", version.ref = "retrofit2KotlinCoroutinesAdapterVersion" }

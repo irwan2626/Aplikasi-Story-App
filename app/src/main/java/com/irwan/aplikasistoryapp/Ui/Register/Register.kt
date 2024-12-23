@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
-import com.irwan.aplikasistoryapp.api.Config
+import com.irwan.aplikasistoryapp.api.ApiClient
 import com.irwan.aplikasistoryapp.R
 import com.irwan.aplikasistoryapp.Ui.Login.Login
 import com.irwan.aplikasistoryapp.api.Register
@@ -89,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerUser(name: String, email: String, password: String) {
-        val apiService = Config.instance
+        val apiService = ApiClient.instance
         val register = Register(name, email, password)
 
         lifecycleScope.launch {

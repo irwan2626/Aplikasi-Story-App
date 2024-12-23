@@ -18,9 +18,12 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.example.loginapp.AddLisStoryActivity
 import com.irwan.aplikasistoryapp.R
-import com.irwan.aplikasistoryapp.api.Config
+import com.irwan.aplikasistoryapp.Ui.ViewModel.MainViewModel
+import com.irwan.aplikasistoryapp.api.ApiClient
 import com.irwan.aplikasistoryapp.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -35,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var token: String
-    private var getFile: File? = null
+    private lateinit var mainViewModel: MainViewModel
     private var selectedImageUri: Uri? = null
         set(value) {
             binding.storyImagePreview.setImageURI(value)
@@ -91,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     private fun createImageFile(): File {
         val timestamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val storageDir: File = getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!
@@ -106,6 +110,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
 
         binding.cameraButton.setOnClickListener {
@@ -135,7 +141,10 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Token not found. Please log in again.", Toast.LENGTH_SHORT).show()
             }
         }
+
+
     }
+
 
 
 
@@ -153,10 +162,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun openImagePicker() {
         imagePickerLauncher.launch("image/*")
     }
+
     private val imagePickerLauncher = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -176,60 +185,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun uploadStory(description: String, photoUri: Uri, token: String) {
-        val apiService = Config.instance
-        lifecycleScope.launch {
-            // Menampilkan progress bar
-            binding.progressBar.visibility = View.VISIBLE
+        val photoFile = getFileFromUri(photoUri)
+        val requestFile = photoFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val photoPart = MultipartBody.Part.createFormData("photo", photoFile.name, requestFile)
+        val descriptionPart = description.toRequestBody("text/plain".toMediaTypeOrNull())
 
-            try {
-                // Mengambil file dari URI
-                val file = getFileFromUri(photoUri)
-                val requestFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val photoPart = MultipartBody.Part.createFormData("photo", file.name, requestFile)
-                val descriptionPart = description.toRequestBody("text/plain".toMediaTypeOrNull())
+        mainViewModel.upload(photoPart, descriptionPart, token)
 
-                // Memanggil API untuk mengupload story
-                val response = apiService.addNewStory(
-                    description = descriptionPart,
-                    photo = photoPart,
-                    lat = null, // Jika ada, tambahkan lat dan lon
-                    lon = null
-                )
+        // Observing upload status
+        mainViewModel.isLoading.observe(this) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
 
-                // Cek respons dari API
-                if (response.isSuccessful && response.body() != null) {
-                    val body = response.body()!!
-                    if (!body.error) {
-                        Toast.makeText(this@MainActivity, "Story uploaded successfully", Toast.LENGTH_SHORT).show()
-                        // Tampilkan story yang baru diupload
-                        val intent = Intent(this@MainActivity, AddLisStoryActivity::class.java)
-                        intent.putExtra("description", description)
-                        intent.putExtra("photoUri", photoUri.toString())
-                        startActivity(intent)
-                    } else {
-                        Toast.makeText(this@MainActivity, body.message, Toast.LENGTH_SHORT).show()
-                    }
-                } else {
-                    Toast.makeText(this@MainActivity, "Upload failed!", Toast.LENGTH_SHORT).show()
-                }
-
-            } catch (e: Exception) {
-                Toast.makeText(this@MainActivity, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-            } finally {
-                // Menyembunyikan progress bar setelah upload selesai
-                binding.progressBar.visibility = View.GONE
+        mainViewModel.message.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+            if (message == "Story uploaded successfully") {
+                val intent = Intent(this@MainActivity, AddLisStoryActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         }
     }
 
 
+
     private fun getFileFromUri(uri: Uri): File {
-        val inputStream = contentResolver.openInputStream(uri)
+        val contentResolver = applicationContext.contentResolver
+        val inputStream = contentResolver.openInputStream(uri) ?: throw IOException("Unable to open input stream")
         val tempFile = File.createTempFile("temp", ".jpg", cacheDir)
-        inputStream?.use { input ->
-            tempFile.outputStream().use { output ->
-                input.copyTo(output)
-            }
+        tempFile.outputStream().use { output ->
+            inputStream.copyTo(output)
         }
         return tempFile
     }

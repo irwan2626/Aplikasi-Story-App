@@ -15,7 +15,7 @@ import com.irwan.aplikasistoryapp.Ui.Add.MainActivity
 import com.irwan.aplikasistoryapp.Ui.Register.RegisterActivity
 import com.irwan.aplikasistoryapp.api.LoginRq
 import com.irwan.aplikasistoryapp.api.LoginResult
-import com.irwan.aplikasistoryapp.api.Config
+import com.irwan.aplikasistoryapp.api.ApiClient
 import com.irwan.aplikasistoryapp.api.Register
 
 import com.irwan.aplikasistoryapp.databinding.ActivityLoginBinding
@@ -92,7 +92,7 @@ class Login : AppCompatActivity() {
 
     private fun loginUser(email: String, password: String) {
         showLoading(true)
-        val apiService = Config.instance
+        val apiService = ApiClient.instance
         val request = LoginRq(email, password)
 
         lifecycleScope.launch {
